@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/weather")({
   head: () => ({ meta: [{ title: "Weather — Mahoba Insight" }, { name: "description", content: "Live weather forecast and air quality." }] }),
-  component: Weather;
+  component: Weather,
 });
 
 interface Loc { lat: number; lon: number; name: string; }
