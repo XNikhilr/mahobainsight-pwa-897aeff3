@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube, Globe } from "lucide-react";
-
-const LOGO = "https://www.mahobainsight.in/wp-content/uploads/2026/03/Screenshot_20231029_084907_Chrome.png";
-const PARENT = "https://www.mahobainsight.in/wp-content/uploads/2026/03/1001390921-removebg-preview.png";
+import mahobaLogo from "@/assets/brand/mahoba-logo.png";
+import parentFirm from "@/assets/brand/parent-firm.png";
 
 const SECTIONS: { label: string; href: string; external?: boolean }[] = [
   { label: "Home", href: "/" },
@@ -36,7 +35,15 @@ export function Footer() {
       {/* Top: brand */}
       <div className="px-5 pt-8 pb-6">
         <div className="flex items-center gap-3">
-          <img src={LOGO} alt="Mahoba Insight" className="h-11 w-11 rounded-lg object-contain ring-1 ring-border" />
+          <img
+            src={mahobaLogo}
+            alt="Mahoba Insight"
+            width={44}
+            height={44}
+            loading="lazy"
+            decoding="async"
+            className="h-11 w-11 rounded-lg object-contain ring-1 ring-border"
+          />
           <div className="leading-tight">
             <div className="font-serif text-lg font-black tracking-tight">Mahoba Insight</div>
             <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">The Daily Brief</div>
@@ -106,7 +113,15 @@ export function Footer() {
       <div className="px-5 py-6">
         <div className="text-center text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">— Parent Firm —</div>
         <div className="mt-3 flex justify-center">
-          <img src={PARENT} alt="Parent firm" className="h-14 w-auto opacity-90 dark:brightness-110 dark:invert" />
+          <img
+            src={parentFirm}
+            alt="Parent firm"
+            width={140}
+            height={56}
+            loading="lazy"
+            decoding="async"
+            className="h-14 w-auto opacity-90 dark:brightness-110 dark:invert"
+          />
         </div>
       </div>
 

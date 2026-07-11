@@ -4,8 +4,7 @@ import { Moon, Sun, User } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { BottomNav } from "./BottomNav";
 import { Footer } from "./Footer";
-
-const HEADER_LOGO = "https://www.mahobainsight.in/wp-content/uploads/2026/03/trace-1.svg";
+import headerLogo from "@/assets/brand/header-logo.svg";
 
 export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
   const { theme, toggle } = useTheme();
@@ -15,8 +14,12 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
             <img
-              src={HEADER_LOGO}
+              src={headerLogo}
               alt={title ?? "Mahoba Insight"}
+              width={120}
+              height={32}
+              decoding="async"
+              fetchPriority="high"
               className="h-8 w-auto dark:invert dark:brightness-110"
             />
             {title && (
