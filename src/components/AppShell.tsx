@@ -3,6 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { Moon, Sun, User } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { BottomNav } from "./BottomNav";
+import { Footer } from "./Footer";
+
+const HEADER_LOGO = "https://www.mahobainsight.in/wp-content/uploads/2026/03/trace-1.svg";
 
 export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
   const { theme, toggle } = useTheme();
@@ -11,11 +14,14 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <img src="https://www.mahobainsight.in/wp-content/uploads/2026/03/Screenshot_20231029_084907_Chrome.png" alt="Mahoba Insight" className="h-7 w-7 rounded-md object-contain" />
-            <div className="leading-tight">
-              <div className="font-serif text-[15px] font-bold tracking-tight">{title ?? "Mahoba Insight"}</div>
-              <div className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">The Daily Brief</div>
-            </div>
+            <img
+              src={HEADER_LOGO}
+              alt={title ?? "Mahoba Insight"}
+              className="h-8 w-auto dark:invert dark:brightness-110"
+            />
+            {title && (
+              <span className="hidden font-serif text-[15px] font-bold tracking-tight sm:inline">{title}</span>
+            )}
           </Link>
           <div className="flex items-center gap-1">
             <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
@@ -27,7 +33,10 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-md pb-24">{children}</main>
+      <main className="mx-auto max-w-md pb-24">
+        {children}
+        <Footer />
+      </main>
       <BottomNav />
     </div>
   );
