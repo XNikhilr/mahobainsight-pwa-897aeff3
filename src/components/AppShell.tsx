@@ -15,13 +15,17 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
           <Link to="/" className="flex items-center gap-2">
             <img
               src={headerLogo}
-              alt={title ?? "Mahoba Insight"}
+              alt="Mahoba Insight logo"
               width={120}
               height={32}
               decoding="async"
               fetchPriority="high"
               className="h-8 w-auto dark:invert dark:brightness-110"
             />
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-bold tracking-tight">Mahoba Insight</span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Your daily Brief</span>
+            </div>
             {title && (
               <span className="hidden font-serif text-[15px] font-bold tracking-tight sm:inline">{title}</span>
             )}
