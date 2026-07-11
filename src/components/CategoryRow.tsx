@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { fetchPosts } from "@/lib/wp";
 import { ArticleCard } from "./ArticleCard";
 import { SkeletonRow } from "./SkeletonCard";
@@ -15,8 +16,8 @@ export function CategoryRow({ slug, title }: { slug: string; title: string }) {
   return (
     <section className="px-4 py-4">
       <div className="mb-2 flex items-baseline justify-between">
-        <h2 className="font-serif text-xl font-bold tracking-tight">{title}</h2>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Section</span>
+        <Link to="/category/$slug" params={{ slug }} className="font-serif text-xl font-bold tracking-tight hover:underline">{title}</Link>
+        <Link to="/category/$slug" params={{ slug }} className="text-[10px] font-bold uppercase tracking-widest text-primary">See all →</Link>
       </div>
       <div className="divide-y divide-border/70">
         {isLoading

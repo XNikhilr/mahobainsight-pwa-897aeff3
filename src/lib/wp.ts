@@ -8,6 +8,17 @@ export interface WPMedia {
 }
 
 export interface WPTerm { id: number; name: string; slug: string; taxonomy: string; }
+
+export interface WPCategory { id: number; name: string; slug: string; count: number; description?: string; parent?: number; }
+
+export async function fetchCategories(perPage = 50): Promise<WPCategory[]> {
+  return wpFetch<WPCategory[]>(`/categories?per_page=${perPage}&orderby=count&order=desc&hide_empty=1`);
+}
+
+export async function fetchCategoryBySlug(slug: string): Promise<WPCategory | null> {
+  const cats = await wpFetch<WPCategory[]>(`/categories?slug=${encodeURIComponent(slug)}`);
+  return cats[0] ?? null;
+}
 export interface WPAuthor {
   id: number;
   name: string;

@@ -5,6 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { ArticleCard } from "@/components/ArticleCard";
 import { BreakingTicker } from "@/components/BreakingTicker";
 import { CategoryRow } from "@/components/CategoryRow";
+import { CategoryChips } from "@/components/CategoryChips";
 import { SkeletonCard, SkeletonRow } from "@/components/SkeletonCard";
 import { fetchPosts } from "@/lib/wp";
 import { RefreshCw } from "lucide-react";
@@ -75,6 +76,7 @@ function Home() {
           </div>
         )}
         <BreakingTicker />
+        <CategoryChips />
 
         {isLoading ? (
           <div className="space-y-6 p-4">
