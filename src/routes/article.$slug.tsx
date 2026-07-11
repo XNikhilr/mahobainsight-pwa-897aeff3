@@ -100,7 +100,18 @@ function Article() {
           <h1 className="mt-2 font-serif text-3xl font-black leading-tight tracking-tight">{title}</h1>
 
           <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            {author && <span className="font-semibold text-foreground">{author.name}</span>}
+            {author && (
+              <Link
+                to="/author/$id"
+                params={{ id: String(author.id) }}
+                className="inline-flex items-center gap-2 font-semibold text-foreground hover:text-primary"
+              >
+                {author.avatar_urls?.["48"] && (
+                  <img src={author.avatar_urls["48"]} alt="" className="h-6 w-6 rounded-full object-cover" />
+                )}
+                {author.name}
+              </Link>
+            )}
             <span>{publish.toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric" })}</span>
             <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" />{read} min read</span>
           </div>
