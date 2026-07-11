@@ -7,10 +7,19 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Deployment target — override with DEPLOY_TARGET=netlify (or netlify-edge) at build time.
+// Defaults to Lovable's Cloudflare Workers preset when unset.
+const deployTarget = process.env.DEPLOY_TARGET;
+const nitroConfig =
+  deployTarget === "netlify" || deployTarget === "netlify-edge"
+    ? { preset: deployTarget }
+    : undefined;
+
 export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  ...(nitroConfig ? { nitro: nitroConfig } : {}),
   vite: {
     plugins: [
       VitePWA({
