@@ -1,0 +1,20 @@
+{
+  "name": "Mahoba Insight",
+  "short_name": "Mahoba",
+  "description": "Reuters-style news app for Mahoba, India and the world.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#c92a2a",
+  "icons": [
+    { "src": "https://www.mahobainsight.in/wp-content/uploads/2026/03/Screenshot_20231029_084907_Chrome.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "https://www.mahobainsight.in/wp-content/uploads/2026/03/Screenshot_20231029_084907_Chrome.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Local · Mahoba", "url": "/local" },
+    { "name": "Markets", "url": "/market" },
+    { "name": "Weather", "url": "/weather" }
+  ]
+}
