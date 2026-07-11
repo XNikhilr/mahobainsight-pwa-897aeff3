@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Bookmark, Share2, Type, Clock } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/article/$slug")({
 function Article() {
   const { slug } = Route.useParams();
   const router = useRouter();
+  const qc = useQueryClient();
   const cached = typeof window !== "undefined" ? readCachedPost(slug) : null;
   const { data: post, isLoading } = useQuery({
     queryKey: ["post", slug],
@@ -38,6 +39,22 @@ function Article() {
   useEffect(() => { localStorage.setItem("fontStep", String(fontStep)); }, [fontStep]);
 
   const bm = useBookmark(post?.id ?? 0);
+
+  // Prefetch the next related article + warm its hero image so the transition feels instant.
+  const nextRelated = related?.find((r) => r.id !== post?.id) ?? null;
+  useEffect(() => {
+    if (!nextRelated) return;
+    qc.prefetchQuery({
+      queryKey: ["post", nextRelated.slug],
+      queryFn: () => fetchPostBySlug(nextRelated.slug),
+    });
+    const heroUrl = featuredImage(nextRelated, "large");
+    if (heroUrl) {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = heroUrl;
+    }
+  }, [nextRelated?.id, qc]);
 
   if (isLoading && !post) {
     return <AppShell><div className="animate-pulse p-4 space-y-4">
@@ -83,7 +100,18 @@ function Article() {
           <h1 className="mt-2 font-serif text-3xl font-black leading-tight tracking-tight">{title}</h1>
 
           <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            {author && <span className="font-semibold text-foreground">{author.name}</span>}
+            {author && (
+              <Link
+                to="/author/$id"
+                params={{ id: String(author.id) }}
+                className="inline-flex items-center gap-2 font-semibold text-foreground hover:text-primary"
+              >
+                {author.avatar_urls?.["48"] && (
+                  <img src={author.avatar_urls["48"]} alt="" className="h-6 w-6 rounded-full object-cover" />
+                )}
+                {author.name}
+              </Link>
+            )}
             <span>{publish.toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric" })}</span>
             <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" />{read} min read</span>
           </div>

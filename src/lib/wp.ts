@@ -8,7 +8,15 @@ export interface WPMedia {
 }
 
 export interface WPTerm { id: number; name: string; slug: string; taxonomy: string; }
-export interface WPAuthor { id: number; name: string; avatar_urls?: Record<string, string>; }
+export interface WPAuthor {
+  id: number;
+  name: string;
+  slug?: string;
+  description?: string;
+  url?: string;
+  link?: string;
+  avatar_urls?: Record<string, string>;
+}
 
 export interface WPPost {
   id: number;
@@ -136,4 +144,22 @@ export async function jwtValidate(token: string): Promise<boolean> {
     });
     return res.ok;
   } catch { return false; }
+}
+
+// Author details
+export async function fetchAuthor(id: number): Promise<WPAuthor | null> {
+  try {
+    return await wpFetch<WPAuthor>(`/users/${id}`);
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchPostsByAuthor(id: number, page = 1, perPage = 10): Promise<WPPost[]> {
+  const params = new URLSearchParams();
+  params.set("_embed", "1");
+  params.set("author", String(id));
+  params.set("per_page", String(perPage));
+  params.set("page", String(page));
+  return wpFetch<WPPost[]>(`/posts?${params.toString()}`);
 }
