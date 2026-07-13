@@ -1,0 +1,150 @@
+/*
+Theme Name: Mahoba Insight
+Theme URI: https://mahobainsight.in/
+Author: Mahoba Insight
+Author URI: https://mahobainsight.in/
+Description: A clean, fast, Reuters-inspired one-page news theme for Mahoba Insight. Features a sticky header with logo & menu, breaking-news ticker, category chips, hero story, latest stories grid, and a footer with social links. Fully Customizer-driven.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.6
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mahoba-insight
+Tags: news, one-page, blog, custom-logo, custom-menu, featured-images, translation-ready, threaded-comments, editor-style, block-styles
+*/
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #111;
+  background: #fff;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: #c92a2a; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3, h4 { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; line-height: 1.2; margin: 0 0 .5em; color: #111; }
+
+.container { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+.screen-reader-text { position: absolute; left: -9999px; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  backdrop-filter: saturate(180%) blur(8px);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px 0;
+}
+.site-branding { display: flex; align-items: center; gap: 10px; }
+.site-branding img { max-height: 40px; width: auto; }
+.site-title { margin: 0; font-family: "Source Serif 4", serif; font-size: 22px; font-weight: 900; color: #111; }
+.site-title a { color: inherit; }
+.site-description { font-size: 12px; color: #666; margin: 0; }
+
+.main-nav ul { list-style: none; display: flex; gap: 18px; margin: 0; padding: 0; }
+.main-nav a { color: #333; font-weight: 500; font-size: 14px; }
+.main-nav a:hover, .main-nav .current-menu-item > a { color: #c92a2a; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid #ddd; padding: 6px 10px;
+  border-radius: 6px; font-size: 14px; cursor: pointer;
+}
+
+/* ---------- Ticker ---------- */
+.ticker {
+  background: #c92a2a; color: #fff; overflow: hidden; white-space: nowrap;
+  font-size: 14px; font-weight: 500;
+}
+.ticker-inner { display: inline-block; padding: 8px 0; animation: ticker 40s linear infinite; }
+.ticker-inner:hover { animation-play-state: paused; }
+.ticker-label {
+  background: #111; color: #fff; padding: 8px 12px; margin-right: 12px;
+  font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+}
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- Category chips ---------- */
+.category-chips {
+  display: flex; gap: 8px; overflow-x: auto; padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.category-chips a {
+  flex-shrink: 0; padding: 6px 14px; background: #f5f5f5; color: #333;
+  border-radius: 999px; font-size: 13px; font-weight: 500;
+}
+.category-chips a:hover { background: #c92a2a; color: #fff; text-decoration: none; }
+
+/* ---------- Hero ---------- */
+.hero-story { padding: 24px 0; border-bottom: 1px solid #eee; }
+.hero-story .hero-image { border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+.hero-story h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 900; }
+.hero-story h2 a { color: #111; }
+.hero-story .excerpt { color: #444; font-size: 16px; }
+.meta { color: #888; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+.meta .cat { color: #c92a2a; font-weight: 700; }
+
+/* ---------- Grid ---------- */
+.section-title { font-size: 22px; font-weight: 800; margin: 24px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #c92a2a; }
+.stories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-bottom: 32px; }
+.story-card .thumb { aspect-ratio: 16/10; overflow: hidden; border-radius: 6px; margin-bottom: 10px; background: #f2f2f2; }
+.story-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.story-card:hover .thumb img { transform: scale(1.03); }
+.story-card h3 { font-size: 18px; font-weight: 700; margin: 4px 0 6px; }
+.story-card h3 a { color: #111; }
+.story-card h3 a:hover { color: #c92a2a; text-decoration: none; }
+.story-card .excerpt { color: #555; font-size: 14px; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: #111; color: #ddd; padding: 32px 0 16px; margin-top: 32px;
+}
+.footer-cols { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+.site-footer h4 { color: #fff; font-size: 16px; margin-bottom: 12px; }
+.site-footer a { color: #ddd; }
+.site-footer a:hover { color: #fff; }
+.footer-nav ul, .footer-cats ul { list-style: none; padding: 0; margin: 0; }
+.footer-nav li, .footer-cats li { margin-bottom: 6px; font-size: 14px; }
+.socials { display: flex; gap: 12px; margin-top: 12px; }
+.socials a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%; background: #222;
+  color: #fff; font-size: 14px; font-weight: 700;
+}
+.socials a:hover { background: #c92a2a; text-decoration: none; }
+.copyright { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #222; font-size: 13px; color: #999; }
+
+/* ---------- Pagination / single ---------- */
+.pagination { display: flex; gap: 8px; justify-content: center; padding: 24px 0; }
+.pagination a, .pagination span {
+  padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; color: #333;
+}
+.pagination .current { background: #c92a2a; color: #fff; border-color: #c92a2a; }
+
+.entry-content { max-width: 720px; margin: 0 auto; padding: 24px 0; }
+.entry-content p { margin: 0 0 1em; font-size: 17px; }
+.entry-content img { margin: 1em 0; border-radius: 6px; }
+.entry-title { font-size: clamp(26px, 4vw, 40px); font-weight: 900; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .stories-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-cols { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .menu-toggle { display: inline-block; }
+  .main-nav { display: none; width: 100%; }
+  .main-nav.open { display: block; }
+  .main-nav ul { flex-direction: column; gap: 8px; padding: 12px 0; }
+  .header-inner { flex-wrap: wrap; }
+  .stories-grid { grid-template-columns: 1fr; }
+  .footer-cols { grid-template-columns: 1fr; }
+}
