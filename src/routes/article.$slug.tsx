@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Bookmark, Share2, Type, Clock, BadgeCheck, Link2, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { AppShell } from "@/components/AppShell";
-import { fetchPostBySlug, fetchPosts, readCachedPost, featuredImage, postCategory, postAuthor, stripHtml, estimateReadingTime } from "@/lib/wp";
+import { fetchPostBySlug, fetchPosts, readCachedPost, featuredImage, postCategory, postAuthor, stripHtml, estimateReadingTime, isAuthorVerified, SITE_URL } from "@/lib/wp";
 import { sharePost, buildShareText } from "@/lib/share";
 import { useBookmark } from "@/lib/bookmarks";
 import { ArticleCard } from "@/components/ArticleCard";
@@ -40,6 +40,32 @@ function Article() {
 
   const bm = useBookmark(post?.id ?? 0);
   const [copied, setCopied] = useState(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  // Intercept clicks on WP-rendered links so same-site article URLs stay inside the PWA.
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const onClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement | null)?.closest("a") as HTMLAnchorElement | null;
+      if (!target) return;
+      const href = target.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+      let url: URL;
+      try { url = new URL(href, window.location.href); } catch { return; }
+      const siteHost = new URL(SITE_URL).host;
+      if (url.host !== siteHost) return; // external — leave alone
+      e.preventDefault();
+      // Try to match a post permalink: /YYYY/MM/DD/slug/ or /slug/
+      const parts = url.pathname.split("/").filter(Boolean);
+      const slug = parts.length ? parts[parts.length - 1] : "";
+      if (slug) {
+        router.navigate({ to: "/article/$slug", params: { slug } });
+      }
+    };
+    el.addEventListener("click", onClick);
+    return () => el.removeEventListener("click", onClick);
+  }, [post?.id, router]);
 
   // Prefetch the next related article + warm its hero image so the transition feels instant.
   const nextRelated = related?.find((r) => r.id !== post?.id) ?? null;
@@ -76,7 +102,7 @@ function Article() {
   const fontSizes = ["prose-sm", "prose-base", "prose-lg"];
   const filtered = related?.filter((r) => r.id !== post.id).slice(0, 3) ?? [];
 
-  const shareUrl = post.link;
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/article/${post.slug}` : post.link;
   const shareText = buildShareText(post);
   const waHref = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
   const xHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`;
@@ -125,7 +151,9 @@ function Article() {
                 )}
                 <span className="inline-flex items-center gap-1">
                   {author.name}
-                  <BadgeCheck className="h-4 w-4 fill-primary text-primary-foreground" aria-label="Verified author" />
+                  {isAuthorVerified(author) && (
+                    <BadgeCheck className="h-4 w-4 fill-primary text-primary-foreground" aria-label="Verified author" />
+                  )}
                 </span>
               </Link>
             )}
@@ -156,6 +184,7 @@ function Article() {
           </div>
 
           <div
+            ref={contentRef}
             className={`prose prose-neutral dark:prose-invert mt-6 max-w-none ${fontSizes[fontStep]} font-serif prose-headings:font-serif prose-a:text-primary prose-img:rounded-xl`}
             style={{ lineHeight: 1.7 }}
             dangerouslySetInnerHTML={{ __html: post.content.rendered }}

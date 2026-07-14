@@ -27,6 +27,23 @@ export interface WPAuthor {
   url?: string;
   link?: string;
   avatar_urls?: Record<string, string>;
+  verified?: boolean;
+  meta?: Record<string, unknown>;
+  acf?: Record<string, unknown>;
+}
+
+/**
+ * True only when WordPress explicitly marks the author verified via a
+ * top-level `verified` field, REST `meta.verified`, or ACF `acf.verified`.
+ * Missing / falsy → false (badge hidden).
+ */
+export function isAuthorVerified(author: WPAuthor | null | undefined): boolean {
+  if (!author) return false;
+  const truthy = (v: unknown) => v === true || v === 1 || v === "1" || v === "true" || v === "yes";
+  if (truthy((author as any).verified)) return true;
+  if (truthy(author.meta?.["verified"])) return true;
+  if (truthy(author.acf?.["verified"])) return true;
+  return false;
 }
 
 export interface WPPost {
