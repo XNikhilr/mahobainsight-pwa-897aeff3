@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 
-const PAGES: Record<string, { title: string; body: JSX.Element }> = {
+const PAGES: Record<string, { title: string; body: ReactNode }> = {
   about: {
     title: "About Mahoba Insight",
     body: (
