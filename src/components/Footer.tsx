@@ -10,14 +10,14 @@ const SECTIONS: { label: string; href: string; external?: boolean }[] = [
   { label: "Weather", href: "/weather" },
 ];
 
-const EDITORIAL: { label: string; href: string }[] = [
-  { label: "Uttar Pradesh", href: "https://www.mahobainsight.in/news/category/uttar-pradesh" },
-  { label: "Madhya Pradesh", href: "https://www.mahobainsight.in/news/category/madhya-pradesh" },
-  { label: "National", href: "https://www.mahobainsight.in/news/category/national" },
-  { label: "International", href: "https://www.mahobainsight.in/news/category/international" },
-  { label: "Politics", href: "https://www.mahobainsight.in/news/category/politics" },
-  { label: "Legal & Law", href: "https://www.mahobainsight.in/news/category/legal-law" },
-  { label: "Religious", href: "https://www.mahobainsight.in/news/category/religious" },
+const EDITORIAL: { label: string; slug: string }[] = [
+  { label: "Uttar Pradesh", slug: "uttar-pradesh" },
+  { label: "Madhya Pradesh", slug: "madhya-pradesh" },
+  { label: "National", slug: "national" },
+  { label: "International", slug: "international" },
+  { label: "Politics", slug: "politics" },
+  { label: "Legal & Law", slug: "legal-law" },
+  { label: "Religious", slug: "religious" },
 ];
 
 function XIcon({ className }: { className?: string }) {
@@ -99,8 +99,8 @@ export function Footer() {
           <div className="text-[10px] font-bold uppercase tracking-widest text-primary">Sections</div>
           <ul className="mt-3 space-y-2 text-[13px]">
             {EDITORIAL.map((s) => (
-              <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noreferrer" className="text-foreground/85 hover:text-primary">{s.label}</a>
+              <li key={s.slug}>
+                <Link to="/category/$slug" params={{ slug: s.slug }} className="text-foreground/85 hover:text-primary">{s.label}</Link>
               </li>
             ))}
           </ul>
@@ -130,13 +130,13 @@ export function Footer() {
       {/* Legal */}
       <div className="px-5 py-5">
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
-          <a href="https://mahobainsight.in/about" target="_blank" rel="noreferrer" className="hover:text-primary">About</a>
+          <Link to="/info/$slug" params={{ slug: "about" }} className="hover:text-primary">About</Link>
           <span className="opacity-40">·</span>
-          <a href="https://mahobainsight.in/contact" target="_blank" rel="noreferrer" className="hover:text-primary">Contact</a>
+          <Link to="/info/$slug" params={{ slug: "contact" }} className="hover:text-primary">Contact</Link>
           <span className="opacity-40">·</span>
-          <a href="https://mahobainsight.in/privacy-policy" target="_blank" rel="noreferrer" className="hover:text-primary">Privacy</a>
+          <Link to="/info/$slug" params={{ slug: "privacy" }} className="hover:text-primary">Privacy</Link>
           <span className="opacity-40">·</span>
-          <a href="https://mahobainsight.in/terms" target="_blank" rel="noreferrer" className="hover:text-primary">Terms</a>
+          <Link to="/info/$slug" params={{ slug: "terms" }} className="hover:text-primary">Terms</Link>
         </div>
         <div className="mt-3 text-center text-[11px] text-muted-foreground">
           © {year} Mahoba Insight. All rights reserved.
