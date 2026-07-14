@@ -151,9 +151,7 @@ function Article() {
                 )}
                 <span className="inline-flex items-center gap-1">
                   {author.name}
-                  {isAuthorVerified(author) && (
-                    <BadgeCheck className="h-4 w-4 fill-primary text-primary-foreground" aria-label="Verified author" />
-                  )}
+                  <BadgeCheck className="h-4 w-4 fill-primary text-primary-foreground" aria-label="Verified author" />
                 </span>
               </Link>
             )}
