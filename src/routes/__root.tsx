@@ -129,8 +129,50 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
 
   useEffect(() => { registerSW(); }, []);
+
+  // Global interceptor: any click on an <a> pointing at mahobainsight.in
+  // stays inside the PWA by routing to the closest internal equivalent.
+  useEffect(() => {
+    const SITE_HOSTS = new Set(["mahobainsight.in", "www.mahobainsight.in"]);
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement | null)?.closest("a") as HTMLAnchorElement | null;
+      if (!a) return;
+      const href = a.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+      let url: URL;
+      try { url = new URL(href, window.location.href); } catch { return; }
+      if (!SITE_HOSTS.has(url.host)) return;
+
+      const parts = url.pathname.split("/").filter(Boolean);
+      let to: string | null = null;
+      let params: Record<string, string> | undefined;
+
+      if (parts.length === 0) {
+        to = "/";
+      } else if (parts[0] === "category" || (parts[0] === "news" && parts[1] === "category")) {
+        const slug = parts[parts[0] === "category" ? 1 : 2];
+        if (slug) { to = "/category/$slug"; params = { slug }; }
+      } else if (["about", "contact", "terms"].includes(parts[0])) {
+        to = "/info/$slug"; params = { slug: parts[0] };
+      } else if (parts[0] === "privacy-policy" || parts[0] === "privacy") {
+        to = "/info/$slug"; params = { slug: "privacy" };
+      } else {
+        const slug = parts[parts.length - 1];
+        if (slug && !slug.includes(".")) { to = "/article/$slug"; params = { slug }; }
+      }
+
+      if (!to) return;
+      e.preventDefault();
+      router.navigate({ to, params } as never);
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
